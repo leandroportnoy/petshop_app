@@ -87,7 +87,7 @@ fun ItemCard(itemDescription: String, iconUrl: String?, onClickListener: () -> U
             Text(
                 text = itemDescription,
                 modifier = Modifier
-                    .padding(5.dp)
+                    .padding(10.dp)
                     .fillMaxWidth()
                     .height(60.dp),
                 textAlign = TextAlign.Center,
@@ -103,7 +103,24 @@ fun ItemCard(itemDescription: String, iconUrl: String?, onClickListener: () -> U
 @Composable
 fun ItemListPreview() {
     ListItems(
-        itemList = listOf(),
+        itemList = listOf(
+            Item(
+                id = 1000,
+                description = "Item Test 1",
+                amount = "99",
+                imageUrl = "",
+                quantity = 99,
+                weight = "200gr"
+            ),
+            Item(
+                id = 1000,
+                description = "Item Test 2",
+                amount = "99",
+                imageUrl = "",
+                quantity = 99,
+                weight = "200gr"
+            )
+        ),
         requestMoreData = { },
         itemClickListener = { }
     )

@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.fragment.app.FragmentActivity
 import br.com.las.petshop.NavGraph
+import br.com.las.petshop.features.detail.DetailsScreen
 import br.com.las.petshop.features.main.MainScreen
 import br.com.las.petshop.ui.theme.PetShopTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -16,9 +17,12 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : FragmentActivity() {
-
     @Inject
     lateinit var mainScreen: MainScreen
+
+    @Inject
+    lateinit var detailsScreen: DetailsScreen
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,7 +45,7 @@ class MainActivity : FragmentActivity() {
             startDestination = startingScreen,
 //        splashScreen = splashScreen,
             mainScreen = mainScreen,
-//        showDetailsScreen = showDetailsScreen
+            detailsScreen = detailsScreen
         )
     }
 }

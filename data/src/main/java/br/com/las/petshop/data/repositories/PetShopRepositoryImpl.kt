@@ -22,9 +22,11 @@ internal class PetShopRepositoryImpl @Inject constructor(private val restApi: Re
         }
 
     @WorkerThread
-    override suspend fun getItem(): Item {
-        TODO("Not yet implemented")
-    }
+    override suspend fun getItem(itemId: Long): Item =
+        restApi.getListItems().list.single { item ->
+            item.id == itemId
+        }
+
 }
 
 @Module

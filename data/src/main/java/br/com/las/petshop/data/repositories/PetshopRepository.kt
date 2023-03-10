@@ -8,5 +8,5 @@ sealed interface PetShopRepository {
     @WorkerThread
     suspend fun getItems(): List<Item>
     @WorkerThread
-    suspend fun getItem(): Item
+    suspend fun getItem(itemId: Long): Item
 }

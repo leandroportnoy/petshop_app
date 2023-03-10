@@ -4,6 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import br.com.las.petshop.features.SceneContract
+import br.com.las.petshop.features.detail.DetailsScreen
+import br.com.las.petshop.features.detail.DetailsScreenEvents
 import br.com.las.petshop.features.main.MainScreen
 import br.com.las.petshop.features.main.MainScreenEvents
 
@@ -11,7 +13,7 @@ import br.com.las.petshop.features.main.MainScreenEvents
 fun NavGraph(
     startDestination: SceneContract<*>,
     mainScreen: MainScreen,
-    //showDetailsScreen: DetailsScreen
+    detailsScreen: DetailsScreen
 ) {
     val navController = rememberNavController()
     NavHost(navController, startDestination.destination) {
@@ -19,15 +21,15 @@ fun NavGraph(
         //main screen
         mainScreen.onCreateNavGraph(this, object : MainScreenEvents {
             override fun onItemSelected(itemId: Long) {
-                //navController.navigate(showDetailsScreen.plainDestination + "/" + showId)
+                navController.navigate(detailsScreen.plainDestination + "/" + itemId)
             }
         })
         //show details
-//        showDetailsScreen.onCreateNavGraph(this, object : DetailsScreenEvents {
-//            override fun onEpisodeSelected(episodeId: Long) {
-//
-//            }
-//        })
+        detailsScreen.onCreateNavGraph(this, object : DetailsScreenEvents {
+            override fun onClick(itemId: Long) {
+                //some event in the future
+            }
+        })
 
     }
 }

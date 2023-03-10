@@ -2,7 +2,7 @@
 App simulação de um PetShop
 
 # Descrição
-Aplicação de listagem de produtos de um PetShop Virtual contendo uma lista de produtos para animais e seus detalhes ao evento de click
+Aplicação de listagem de produtos de um PetShop Virtual contendo uma lista de produtos para animais,seus detalhes ao evento de click e uma simulação de carrinho de compras
 
 ## Instalação
 

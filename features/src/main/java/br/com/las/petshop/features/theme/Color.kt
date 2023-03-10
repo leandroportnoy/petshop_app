@@ -1,4 +1,4 @@
-package br.com.las.petshop.ui.theme
+package br.com.las.petshop.features.theme
 
 import androidx.compose.ui.graphics.Color
 
