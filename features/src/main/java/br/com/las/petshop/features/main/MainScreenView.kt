@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.integerResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -21,6 +22,7 @@ import br.com.las.petshop.common.cardElevation
 import br.com.las.petshop.common.minPadding
 import br.com.las.petshop.data.data.Item
 import br.com.las.petshop.features.R
+import br.com.las.petshop.features.header.ScreenHeader
 import br.com.las.petshop.features.loading.Loading
 import coil.compose.rememberImagePainter
 
@@ -39,21 +41,21 @@ fun MainScreenView(viewModel: MainScreenViewModel) {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun AppBar(
-    title: String
-){
-    MaterialTheme {
-        Column {
-            TopAppBar(
-                title = {
-                    Text(text = title)
-                }
-            )
-        }
-    }
-}
+//@OptIn(ExperimentalMaterial3Api::class)
+//@Composable
+//fun AppBar(
+//    title: String
+//){
+//    MaterialTheme {
+//        Column {
+//            TopAppBar(
+//                title = {
+//                    Text(text = title)
+//                }
+//            )
+//        }
+//    }
+//}
 
 @Composable
 fun ListItems(
@@ -61,22 +63,24 @@ fun ListItems(
     requestMoreData: () -> Unit,
     itemClickListener: (Item) -> Unit
 ) {
-
     val almostEndingIndex = (itemList.size * 0.9).toInt()
-    Row {
-//        AppBar(title = "Produtos")
-        LazyVerticalGrid(
-            columns = GridCells.Fixed(integerResource(id = R.integer.grid_number_items)),
-            contentPadding = PaddingValues(minPadding)
-        ) {
-            items(itemList) { item ->
-                if (item == itemList[almostEndingIndex]) {
-                    requestMoreData()
-                }
-                ItemCard(item.description, item.imageUrl) { itemClickListener(item) }
-            }
-        }
 
+    Column {
+        ScreenHeader(title = "Lista de Itens")
+        Row {
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(integerResource(id = R.integer.grid_number_items)),
+                contentPadding = PaddingValues(minPadding)
+            ) {
+                items(itemList) { item ->
+                    if (item == itemList[almostEndingIndex]) {
+                        requestMoreData()
+                    }
+                    ItemCard(item.description, item.imageUrl) { itemClickListener(item) }
+                }
+            }
+
+        }
     }
 
 }
@@ -116,12 +120,6 @@ fun ItemCard(itemDescription: String, iconUrl: String?, onClickListener: () -> U
             )
         }
     }
-}
-@OptIn(ExperimentalMaterial3Api::class)
-@Preview
-@Composable
-fun TopAppBarPreview() {
-    AppBar(title = "AppBarExample")
 }
 
 @Preview
