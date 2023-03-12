@@ -1,4 +1,4 @@
-package br.com.las.petshop.features.main
+package br.com.las.petshop.features.cart
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -12,37 +12,38 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class MainScreenViewModel @Inject constructor(
+class CartScreenViewModel @Inject constructor(
     val savedStateHandle: SavedStateHandle,
     private  val petShopRepository: PetShopRepository
 ): ViewModel() {
 
-    lateinit var screenEventsHandler : MainScreenEvents
+    lateinit var screenEventsHandler : CartScreenEvents
 
-    private val currentItemList : MutableList<Item> = mutableListOf()
-    private val _screenState : MutableStateFlow<FetchState> = MutableStateFlow(FetchState.Idle)
+    private val itemsOnCartList : MutableList<Item> = mutableListOf()
+    private val _screenState : MutableStateFlow<FetchState> = MutableStateFlow(
+        FetchState.Idle)
 
     val screenState : StateFlow<FetchState> = _screenState
 
     init {
         viewModelScope.launch {
-            currentItemList.addAll(petShopRepository.getItems())
-            _screenState.value = FetchState.Success(currentItemList)
+            itemsOnCartList.addAll(petShopRepository.getItems())
+            _screenState.value = FetchState.Success(itemsOnCartList)
         }
     }
 
-    fun onItemClicked(item: Item) {
-        screenEventsHandler.onItemSelected(item.id)
+    fun onDeleteEventClick(item: Item) {
+
     }
 
-    fun onCartClicked() {
-        screenEventsHandler.onCartClicked()
-        print("screen cart called ------------------------------------------- ")
+    fun shareList() {
+
     }
 
     sealed class FetchState {
         object Idle : FetchState()
-        data class Success(val items : List<Item>) : FetchState()
+        data class Success(val itemsOnCart : List<Item>) : FetchState()
+//        data class Delete(val item : Item) : FetchState()
     }
 
 }

@@ -1,4 +1,4 @@
-package br.com.las.petshop.features.loading
+package br.com.las.petshop.features.components.loading
 
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.Canvas

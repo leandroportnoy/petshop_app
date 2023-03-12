@@ -19,7 +19,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import br.com.las.petshop.data.data.Item
 import br.com.las.petshop.features.R.*
-import br.com.las.petshop.features.loading.Loading
+import br.com.las.petshop.features.components.loading.Loading
 import br.com.las.petshop.features.theme.Grey_900
 import coil.compose.rememberImagePainter
 
@@ -172,7 +172,8 @@ private fun ShowDetails(
                 Image(
                     painterResource(id = drawable.ic_cart),
                     contentDescription ="Cart button icon",
-                    modifier = Modifier.size(20.dp))
+                    modifier = Modifier.size(20.dp)
+                )
                 Text(
                     text = "Adicionar",
                     Modifier.padding(start = 10.dp)

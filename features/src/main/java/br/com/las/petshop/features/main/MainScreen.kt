@@ -6,6 +6,6 @@ import br.com.las.petshop.features.SceneEvents
 interface MainScreen : SceneContract<MainScreenEvents>
 
 interface MainScreenEvents: SceneEvents {
-
     fun onItemSelected(itemId : Long)
+    fun onCartClicked()
 }

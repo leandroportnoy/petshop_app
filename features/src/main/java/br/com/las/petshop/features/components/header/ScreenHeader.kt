@@ -1,7 +1,8 @@
-package br.com.las.petshop.features.header
+package br.com.las.petshop.features.components.header
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
 import androidx.compose.material3.MaterialTheme
@@ -16,7 +17,8 @@ import br.com.las.petshop.features.R
 
 @Composable
 fun ScreenHeader(
-    title: String
+    title: String,
+    eventClick: () -> Unit
 ){
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -35,14 +37,16 @@ fun ScreenHeader(
             )
         }
         // right side: user icon
+
         Image(
             painterResource(id = R.drawable.ic_cart),
             contentDescription ="Cart button icon",
             modifier = Modifier
+                .clickable {
+                    eventClick()
+                }
                 .padding(end = 20.dp, top = 30.dp, bottom = 15.dp)
                 .size(24.dp),
-
-
         )
     }
 }
@@ -50,5 +54,5 @@ fun ScreenHeader(
 @Preview
 @Composable
 fun HeaderPreview() {
-    ScreenHeader(title = "Lista de Itens")
+    ScreenHeader(title = "Lista de Itens") { }
 }

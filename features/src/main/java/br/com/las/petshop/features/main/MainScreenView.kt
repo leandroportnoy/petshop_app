@@ -6,7 +6,10 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.material3.*
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
@@ -14,7 +17,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.integerResource
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -22,8 +24,10 @@ import br.com.las.petshop.common.cardElevation
 import br.com.las.petshop.common.minPadding
 import br.com.las.petshop.data.data.Item
 import br.com.las.petshop.features.R
-import br.com.las.petshop.features.header.ScreenHeader
-import br.com.las.petshop.features.loading.Loading
+import br.com.las.petshop.features.components.header.ScreenHeader
+import br.com.las.petshop.features.components.loading.Loading
+import coil.compose.AsyncImage
+import coil.compose.rememberAsyncImagePainter
 import coil.compose.rememberImagePainter
 
 @Composable
@@ -32,50 +36,33 @@ fun MainScreenView(viewModel: MainScreenViewModel) {
         is MainScreenViewModel.FetchState.Idle -> Loading()
         is MainScreenViewModel.FetchState.Success -> {
             if (screenState.items.isNotEmpty()) {
-                ListItems(screenState.items,
-                    { viewModel.onRequestMoreData() }) {
-                    viewModel.onItemClicked(it)
-                }
+                ListItems(itemList = screenState.items,
+                    cartClickListener = { viewModel.onCartClicked() })
+                    {
+                        viewModel.onItemClicked(it)
+                    }
+
             }
         }
     }
 }
 
-//@OptIn(ExperimentalMaterial3Api::class)
-//@Composable
-//fun AppBar(
-//    title: String
-//){
-//    MaterialTheme {
-//        Column {
-//            TopAppBar(
-//                title = {
-//                    Text(text = title)
-//                }
-//            )
-//        }
-//    }
-//}
-
 @Composable
 fun ListItems(
     itemList: List<Item>,
-    requestMoreData: () -> Unit,
+    cartClickListener: () -> Unit,
     itemClickListener: (Item) -> Unit
 ) {
-    val almostEndingIndex = (itemList.size * 0.9).toInt()
-
     Column {
-        ScreenHeader(title = "Lista de Itens")
+        ScreenHeader(title = "Lista de Itens") {
+            cartClickListener()
+        }
         Row {
             LazyVerticalGrid(
                 columns = GridCells.Fixed(integerResource(id = R.integer.grid_number_items)),
                 contentPadding = PaddingValues(minPadding)
             ) {
                 items(itemList) { item ->
-                    if (item == itemList[almostEndingIndex]) {
-                        requestMoreData()
-                    }
                     ItemCard(item.description, item.imageUrl) { itemClickListener(item) }
                 }
             }
@@ -94,10 +81,10 @@ fun ItemCard(itemDescription: String, iconUrl: String?, onClickListener: () -> U
             .clickable { onClickListener() }
     ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            val painter = rememberImagePainter(data = iconUrl)
+            val painter = rememberAsyncImagePainter(model = iconUrl)
 
-            Image(
-                painter = painter,
+            AsyncImage(
+                model = iconUrl,
                 contentDescription = itemDescription,
                 modifier = Modifier
                     .padding(10.dp)
@@ -144,8 +131,8 @@ fun ItemListPreview() {
                 weight = "200gr"
             )
         ),
-        requestMoreData = { },
-        itemClickListener = { }
+        itemClickListener = { },
+        cartClickListener = { }
     )
 }
 
