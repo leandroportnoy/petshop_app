@@ -15,7 +15,7 @@ import androidx.core.view.ViewCompat
 import br.com.las.petshop.features.theme.*
 
 private val DarkColorScheme = darkColorScheme(
-    primary = Color.White,
+    primary = Purple40,
     secondary = PurpleGrey80,
     tertiary = Pink80,
     background = Color.White

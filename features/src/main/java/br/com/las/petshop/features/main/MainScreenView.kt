@@ -1,20 +1,17 @@
 package br.com.las.petshop.features.main
 
-import br.com.las.petshop.features.R
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.integerResource
 import androidx.compose.ui.text.style.TextAlign
@@ -23,12 +20,14 @@ import androidx.compose.ui.unit.dp
 import br.com.las.petshop.common.cardElevation
 import br.com.las.petshop.common.minPadding
 import br.com.las.petshop.data.data.Item
+import br.com.las.petshop.features.R
+import br.com.las.petshop.features.loading.Loading
 import coil.compose.rememberImagePainter
 
 @Composable
 fun MainScreenView(viewModel: MainScreenViewModel) {
     when (val screenState = viewModel.screenState.collectAsState().value) {
-        is MainScreenViewModel.FetchState.Idle -> Unit
+        is MainScreenViewModel.FetchState.Idle -> Loading()
         is MainScreenViewModel.FetchState.Success -> {
             if (screenState.items.isNotEmpty()) {
                 ListItems(screenState.items,
@@ -40,25 +39,46 @@ fun MainScreenView(viewModel: MainScreenViewModel) {
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun AppBar(
+    title: String
+){
+    MaterialTheme {
+        Column {
+            TopAppBar(
+                title = {
+                    Text(text = title)
+                }
+            )
+        }
+    }
+}
+
 @Composable
 fun ListItems(
     itemList: List<Item>,
     requestMoreData: () -> Unit,
     itemClickListener: (Item) -> Unit
 ) {
-    val almostEndingIndex = (itemList.size * 0.9).toInt()
 
-    LazyVerticalGrid(
-        columns = GridCells.Fixed(integerResource(id = R.integer.grid_number_items)),
-        contentPadding = PaddingValues(minPadding)
-    ) {
-        items(itemList) { item ->
-            if (item == itemList[almostEndingIndex]) {
-                requestMoreData()
+    val almostEndingIndex = (itemList.size * 0.9).toInt()
+    Row {
+//        AppBar(title = "Produtos")
+        LazyVerticalGrid(
+            columns = GridCells.Fixed(integerResource(id = R.integer.grid_number_items)),
+            contentPadding = PaddingValues(minPadding)
+        ) {
+            items(itemList) { item ->
+                if (item == itemList[almostEndingIndex]) {
+                    requestMoreData()
+                }
+                ItemCard(item.description, item.imageUrl) { itemClickListener(item) }
             }
-            ItemCard(item.description, item.imageUrl) { itemClickListener(item) }
         }
+
     }
+
 }
 
 @Composable
@@ -91,13 +111,18 @@ fun ItemCard(itemDescription: String, iconUrl: String?, onClickListener: () -> U
                     .fillMaxWidth()
                     .height(60.dp),
                 textAlign = TextAlign.Center,
-                color = MaterialTheme.colorScheme.primary,
+                color = Color.White,
                 style = MaterialTheme.typography.bodySmall
             )
         }
     }
 }
-
+@OptIn(ExperimentalMaterial3Api::class)
+@Preview
+@Composable
+fun TopAppBarPreview() {
+    AppBar(title = "AppBarExample")
+}
 
 @Preview
 @Composable
