@@ -16,7 +16,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -25,10 +24,8 @@ import br.com.las.petshop.data.data.Item
 import br.com.las.petshop.features.R
 import br.com.las.petshop.features.components.header.ScreenHeader
 import br.com.las.petshop.features.components.loading.Loading
-import br.com.las.petshop.features.theme.PurpleGrey40
 import br.com.las.petshop.features.theme.PurpleGrey80
 import coil.compose.AsyncImage
-import coil.compose.rememberImagePainter
 
 @Composable
 fun CartScreenView(viewModel: CartScreenViewModel) {

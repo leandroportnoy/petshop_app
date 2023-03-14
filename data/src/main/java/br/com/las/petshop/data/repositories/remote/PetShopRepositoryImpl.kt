@@ -1,4 +1,4 @@
-package br.com.las.petshop.data.repositories
+package br.com.las.petshop.data.repositories.remote
 
 import androidx.annotation.WorkerThread
 import br.com.las.petshop.data.data.Item
@@ -34,5 +34,5 @@ internal class PetShopRepositoryImpl @Inject constructor(private val restApi: Re
 abstract class PetShopProvider {
     @Singleton
     @Binds
-    internal abstract fun getTVMazeRepository(impl: PetShopRepositoryImpl): PetShopRepository
+    internal abstract fun getPetShopRepository(impl: PetShopRepositoryImpl): PetShopRepository
 }

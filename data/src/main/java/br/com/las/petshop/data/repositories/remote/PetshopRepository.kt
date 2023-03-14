@@ -1,4 +1,4 @@
-package br.com.las.petshop.data.repositories
+package br.com.las.petshop.data.repositories.remote
 
 import androidx.annotation.WorkerThread
 import br.com.las.petshop.data.data.Item
