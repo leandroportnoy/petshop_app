@@ -10,6 +10,8 @@ import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -26,6 +28,8 @@ import br.com.las.petshop.data.data.Item
 import br.com.las.petshop.features.R
 import br.com.las.petshop.features.components.header.ScreenHeader
 import br.com.las.petshop.features.components.loading.Loading
+import br.com.las.petshop.features.components.share.shareCartList
+import br.com.las.petshop.features.concat
 import br.com.las.petshop.features.theme.PurpleGrey80
 import coil.compose.AsyncImage
 
@@ -74,6 +78,40 @@ fun CartItems(
                         }
                     }
                 }
+            }
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .fillMaxHeight(),
+                verticalAlignment = Alignment.Bottom,
+                horizontalArrangement = Arrangement.Center
+            ) {
+                Button(
+                    modifier = Modifier
+                        .padding(10.dp)
+                        .fillMaxWidth(),
+                    shape = RoundedCornerShape(10.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        contentColor = Color.White,
+                        containerColor = MaterialTheme.colorScheme.primary
+                    ),
+                    onClick = {
+                        shareCartList(context, cartItems.concat())
+                    }
+                )
+                {
+                    Image(
+                        painterResource(id = R.drawable.ic_share),
+                        contentDescription = "Share button icon",
+                        modifier = Modifier.size(20.dp)
+                    )
+                    androidx.compose.material3.Text(
+                        text = "Compartilhar",
+                        Modifier.padding(start = 10.dp)
+                    )
+                }
+
             }
         }
     }
