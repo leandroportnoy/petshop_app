@@ -16,13 +16,14 @@ Aplicação de listagem de produtos de um PetShop Virtual contendo uma lista de 
 ## Libs
 - Android Compose and Navigation
 - Dagger 2 / Hilt
+- Room
 - Volley
 - Mockito, JUnit
 
 ## Estrutura
 *** utilizando DDD
 **app - entry point da aplicação
-**feature - contem as cenas de cada jornada (listagem, detalhes, meu carrinho)
+**feature - contem as cenas de cada jornada (listagem, detalhes, meu carrinho, compartilhamento de itens para apps)
 **common - arquivos comuns aos projetos
-**data - arquivo de acesso a rede (serviços)
+**data - arquivo de acesso a rede (serviços) e cache local (carrinho de compras)
 
