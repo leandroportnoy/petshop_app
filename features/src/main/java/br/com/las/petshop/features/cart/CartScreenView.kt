@@ -1,5 +1,6 @@
 package br.com.las.petshop.features.cart
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -16,6 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -32,16 +34,14 @@ fun CartScreenView(viewModel: CartScreenViewModel) {
     when (val screenState = viewModel.screenState.collectAsState().value) {
         is CartScreenViewModel.FetchState.Idle -> Loading()
         is CartScreenViewModel.FetchState.Success -> {
-            if (screenState.itemsOnCart.isNotEmpty()) {
-                CartItems(
-                    cartItems = screenState.itemsOnCart,
-                    onShareCartList = { viewModel.shareList() })
-                {
-                    viewModel.onDeleteEventClick(it)
-                }
-
+            CartItems(
+                cartItems = screenState.itemsOnCart,
+                onShareCartList = { viewModel.shareList() })
+            {
+                viewModel.onDeleteEventClick(it)
             }
         }
+
     }
 }
 
@@ -56,23 +56,25 @@ fun CartItems(
     onShareCartList: () -> Unit,
     onDeleteEventClick: (Item) -> Unit
 ) {
-
+    val context = LocalContext.current
     Column {
         CartScreenHeader()
-
-        Row {
-            LazyColumn(
-                modifier = Modifier.padding(
-                    14.dp
-                )
-            ) {
-                items(items = cartItems) { item ->
-                    CartListItem(item = item) {
-                        onDeleteEventClick(it)
+        if (cartItems.isNotEmpty()) {
+            Row {
+                LazyColumn(
+                    modifier = Modifier.padding(
+                        14.dp
+                    )
+                ) {
+                    items(items = cartItems) { item ->
+                        CartListItem(item = item) {
+                            onDeleteEventClick(it)
+                            Toast.makeText(context, "Item deletado com sucesso", Toast.LENGTH_SHORT)
+                                .show()
+                        }
                     }
                 }
             }
-
         }
     }
 
@@ -95,13 +97,10 @@ fun LazyItemScope.CartListItem(item: Item, removeItem: (Item) -> Unit) {
                     text = shortDescription(item.description),
                     style = MaterialTheme.typography.bodyLarge,
                 )
-//                Row(modifier = Modifier.align(Alignment.End)) {
-//
-//                }
             }
             Image(
                 painterResource(id = R.drawable.ic_delete),
-                contentDescription ="Cart button icon",
+                contentDescription = "Cart button icon",
                 modifier = Modifier
                     .clickable {
                         removeItem(item)
@@ -128,11 +127,12 @@ fun CartItemBackground(content: @Composable BoxWithConstraintsScope.() -> Unit) 
 
 @Composable
 fun CartArticleIcon(iconUrl: String) {
-   // val painter = rememberImagePainter(data = iconUrl)
-    AsyncImage(model = iconUrl,
+    // val painter = rememberImagePainter(data = iconUrl)
+    AsyncImage(
+        model = iconUrl,
         contentDescription = "",
-                modifier = Modifier
-                .background(color = Color.Red)
+        modifier = Modifier
+            .background(color = Color.Red)
             //.aspectRatio(1 / 1f),
             .width(50.dp)
             .height(100.dp)

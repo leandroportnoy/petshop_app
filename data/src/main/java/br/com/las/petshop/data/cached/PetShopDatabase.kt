@@ -16,6 +16,6 @@ abstract class PetShopDatabase: RoomDatabase() {
     abstract fun itemDao(): ItemDao
 
     companion object {
-        const val HORUS_DATABASE = "PetShopDB"
+        const val PETSHOP_DATABASE = "PetShopDB"
     }
 }

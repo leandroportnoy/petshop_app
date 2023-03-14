@@ -4,36 +4,38 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.las.petshop.data.data.Item
-import br.com.las.petshop.data.repositories.remote.PetShopRepository
+import br.com.las.petshop.data.repositories.local.CartRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class CartScreenViewModel @Inject constructor(
     val savedStateHandle: SavedStateHandle,
-    private  val petShopRepository: PetShopRepository
-): ViewModel() {
+    private val cartRepository: CartRepository
+) : ViewModel() {
 
-    lateinit var screenEventsHandler : CartScreenEvents
+    private val _screenState: MutableStateFlow<FetchState> = MutableStateFlow(FetchState.Idle)
 
-    private val itemsOnCartList : MutableList<Item> = mutableListOf()
-    private val _screenState : MutableStateFlow<FetchState> = MutableStateFlow(
-        FetchState.Idle)
-
-    val screenState : StateFlow<FetchState> = _screenState
+    lateinit var screenEventsHandler: CartScreenEvents
+    val screenState: StateFlow<FetchState> = _screenState
 
     init {
         viewModelScope.launch {
-            itemsOnCartList.addAll(petShopRepository.getItems())
-            _screenState.value = FetchState.Success(itemsOnCartList)
+            _screenState.value = FetchState.Success(cartRepository.getCartItems())
         }
     }
 
     fun onDeleteEventClick(item: Item) {
-
+        viewModelScope.launch {
+            _screenState.update {
+                cartRepository.delete(item)
+                FetchState.Success(cartRepository.getCartItems())
+            }
+        }
     }
 
     fun shareList() {
@@ -42,8 +44,7 @@ class CartScreenViewModel @Inject constructor(
 
     sealed class FetchState {
         object Idle : FetchState()
-        data class Success(val itemsOnCart : List<Item>) : FetchState()
-//        data class Delete(val item : Item) : FetchState()
+        data class Success(val itemsOnCart: List<Item>) : FetchState()
     }
 
 }

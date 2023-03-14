@@ -1,5 +1,6 @@
 package br.com.las.petshop.features.detail
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -13,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -29,14 +31,18 @@ internal fun DetailsScreenView(viewModel: DetailsScreenViewModel) {
         is DetailsScreenViewModel.ScreenState.Loading -> Loading()
         is DetailsScreenViewModel.ScreenState.Fetched -> ShowDetails(
             screenState.item
-        )
+        ) {
+            viewModel.insertItemClicked(screenState.item)
+        }
     }
 }
 
 @Composable
 private fun ShowDetails(
-    item: Item
+    item: Item,
+    insertItemClickListener: (Item) -> Unit
 ) {
+    val context = LocalContext.current
     Column(
         modifier = Modifier
             .fillMaxHeight()
@@ -50,9 +56,7 @@ private fun ShowDetails(
             verticalAlignment = Alignment.Top,
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
-
             val painter = rememberImagePainter(data = item.imageUrl)
-
             Image(
                 painter = painter,
                 contentDescription = item.description,
@@ -62,7 +66,6 @@ private fun ShowDetails(
                 contentScale = ContentScale.Crop,
                 alignment = Alignment.Center,
             )
-
         }
 
         Row(
@@ -77,7 +80,7 @@ private fun ShowDetails(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(10.dp, 5.dp, 5.dp, 5.dp),
-            textAlign = TextAlign.Start,
+                textAlign = TextAlign.Start,
             )
         }
 
@@ -123,7 +126,6 @@ private fun ShowDetails(
                     .padding(0.dp, 5.dp, 5.dp, 5.dp),
                 textAlign = TextAlign.Start,
             )
-
         }
 
         Row(
@@ -146,7 +148,6 @@ private fun ShowDetails(
                     .padding(0.dp, 5.dp, 5.dp, 5.dp),
                 textAlign = TextAlign.Start,
             )
-
         }
 
         Row(
@@ -163,15 +164,18 @@ private fun ShowDetails(
                 shape = RoundedCornerShape(10.dp),
                 colors = ButtonDefaults.buttonColors(
                     contentColor = Color.White,
-                    containerColor = MaterialTheme.colorScheme.primary),
+                    containerColor = MaterialTheme.colorScheme.primary
+                ),
                 onClick = {
-                    // handle button click
+                    insertItemClickListener(item)
+                    Toast.makeText(context, "Item adicionado com sucesso", Toast.LENGTH_SHORT)
+                        .show()
                 }
             )
             {
                 Image(
                     painterResource(id = drawable.ic_cart),
-                    contentDescription ="Cart button icon",
+                    contentDescription = "Cart button icon",
                     modifier = Modifier.size(20.dp)
                 )
                 Text(
@@ -203,6 +207,6 @@ fun DetailsPreview() {
             quantity = 99,
             weight = "200gr"
         )
-    )
+    ) { }
 
 }

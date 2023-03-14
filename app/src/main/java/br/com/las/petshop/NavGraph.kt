@@ -33,13 +33,13 @@ fun NavGraph(
         })
         //show details
         detailsScreen.onCreateNavGraph(this, object : DetailsScreenEvents {
-            override fun onClick(itemId: Long) {
+            override fun backToMainScreen() {
                 //some event in the future
+                navController.navigate(mainScreen.plainDestination)
             }
         })
 
         cartScreen.onCreateNavGraph(this, object : CartScreenEvents {
-
             override fun onShareClicked() {
 
             }

@@ -14,15 +14,15 @@ import javax.inject.Inject
 @HiltViewModel
 class MainScreenViewModel @Inject constructor(
     val savedStateHandle: SavedStateHandle,
-    private  val petShopRepository: PetShopRepository
-): ViewModel() {
+    private val petShopRepository: PetShopRepository
+) : ViewModel() {
 
-    lateinit var screenEventsHandler : MainScreenEvents
+    lateinit var screenEventsHandler: MainScreenEvents
 
-    private val currentItemList : MutableList<Item> = mutableListOf()
-    private val _screenState : MutableStateFlow<FetchState> = MutableStateFlow(FetchState.Idle)
+    private val currentItemList: MutableList<Item> = mutableListOf()
+    private val _screenState: MutableStateFlow<FetchState> = MutableStateFlow(FetchState.Idle)
 
-    val screenState : StateFlow<FetchState> = _screenState
+    val screenState: StateFlow<FetchState> = _screenState
 
     init {
         viewModelScope.launch {
@@ -42,7 +42,7 @@ class MainScreenViewModel @Inject constructor(
 
     sealed class FetchState {
         object Idle : FetchState()
-        data class Success(val items : List<Item>) : FetchState()
+        data class Success(val items: List<Item>) : FetchState()
     }
 
 }
